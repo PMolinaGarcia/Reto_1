@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"dominio","l":"BinaryTree"},{"p":"dominio","l":"CrossReference"}];updateSearchResults();

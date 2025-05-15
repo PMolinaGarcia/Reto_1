@@ -1,0 +1,79 @@
+package aplicacion;
+import dominio.*;
+import java.util.*;
+import java.io.*;
+
+
+public class Principal{
+
+    static Set <String> CARACTERES = CrossReference.CARACTERES;
+    static Set <String> DIGITOS = CrossReference.DIGITOS;
+    static Set <String> SEPARADORES = CrossReference.SEPARADORES;
+    static Set <String> RESERVED_WORDS = CrossReference.RESERVED_WORDS;
+
+    public static void procesarLinea(String line, int lineNumber, BinaryTree tree){
+
+        StringBuilder palabra = new StringBuilder();
+
+        for (int i = 0; i < line.length(); i++){
+
+            String c = String.valueOf(line.charAt(i));
+
+            if (CARACTERES.contains(c)){
+                palabra.append(c);
+            }
+
+            else if(DIGITOS.contains(c)){
+                palabra.append(c);
+            }
+
+            else if(SEPARADORES.contains(c)){
+                String palabraString = palabra.toString();
+                if (!palabraString.isEmpty() && !RESERVED_WORDS.contains(palabraString)){
+                    if (CARACTERES.contains(String.valueOf(palabraString.charAt(0)))){
+                        tree.add(palabraString,lineNumber);
+                    }
+                    else if (DIGITOS.contains(String.valueOf(palabraString.charAt(0)))){
+                        palabra.setLength(0);
+                    }
+                }
+                palabra.setLength(0);
+            }
+        }
+
+    }
+
+    public static void procesarArchivo(File archivo) throws Exception{
+        BinaryTree arbol = new BinaryTree();
+        Scanner sc = new Scanner (archivo);
+        int numeroLinea=0;
+
+        while (sc.hasNextLine()){
+            String linea = sc.nextLine();
+            procesarLinea(linea, numeroLinea, arbol);
+            numeroLinea+=1;
+        }
+        sc.close();
+        arbol.inOrdenTraversal();
+    }
+
+
+    public static void main(String[] args) throws Exception {
+
+        if (args.length == 0){
+            System.out.println("Por favor, proporcione el nombre del archivo que quiera leer: ");
+        }
+
+        else {
+            File archivo = new File(args[0]);
+            if (!archivo.exists()) {
+                System.out.println("El archivo: " + args[0] + " no existe");
+            } else {
+                procesarArchivo(archivo);
+            }
+        }
+
+
+    }
+
+}

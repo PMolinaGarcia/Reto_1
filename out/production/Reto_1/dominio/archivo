@@ -1,0 +1,43 @@
+public class Principal{
+
+    Scanner sc = new Scanner(System.in);
+
+    static Set <String> CARACTERES = CrossReference.CARACTERES;
+    static Set <String> DIGITOS = CrossReference.DIGITOS;
+    static Set <String> SEPARADORES = CrossReference.SEPARADORES;
+    static Set <String> RESERVED_WORDS = CrossReference.RESERVED_WORDS;
+
+    public static void procesarLinea(String line, int lineNumber, BinaryTree tree){
+
+        StringBuilder palabra = new StringBuilder();
+
+        for (int i = 0; i < line.length(); i++){
+
+            if (CARACTERES.contains(String.valueOf(line.codePointAt(i)))){
+                palabra.append(line.charAt(i));
+            }
+
+            else if(DIGITOS.contains(String.valueOf(line.codePointAt(i)))){
+                palabra.append(line.codePointAt(i));
+            }
+
+            else if(SEPARADORES.contains(String.valueOf(line.codePointAt(i)))){
+                if (!RESERVED_WORDS.contains(String.valueOf(palabra))){
+                    if (CARACTERES.contains(String.valueOf(palabra.codePointAt(0)))){
+                        tree.add(String.valueOf(palabra),lineNumber);
+                    }
+                    else if (DIGITOS.contains(String.valueOf(palabra.codePointAt(0)))){
+                        palabra = new StringBuilder();
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args){
+
+        ObjectInputStream oi = new ObjectInputStream(new FileInputStream(Arrays.toString(args)));
+        public void procesarArchivo()
+    }
+
+}
